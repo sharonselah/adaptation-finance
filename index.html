@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BRP-01 — Adaptation Finance to Africa: Figure Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFFFFF; --ink:#141414; --muted:#666060; --line:#E6E4E1;
+    --lime:#98C11F; --teal:#387167; --card:#FFFFFF;
+    --accent:var(--teal);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);
+    font:16px/1.6 "Montserrat",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  a{color:var(--teal)}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 20px}
+
+  header.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);
+    backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(20,20,20,.05),0 6px 18px -12px rgba(20,20,20,.22)}
+  .topbar{display:flex;align-items:center;gap:16px;min-height:62px}
+  .brand{display:flex;align-items:center;gap:14px;flex:0 0 auto}
+  .brand img{display:block;width:auto}
+  .brand .fsd{height:32px}
+  .brand .bayes{height:26px}
+  .brand .div{width:1px;height:26px;background:rgba(20,20,20,.12);flex:0 0 auto}
+  .topbar nav{margin-left:auto;display:flex;gap:44px;font-size:18px;min-width:0}
+  .burger{display:none;margin-left:auto;width:42px;height:42px;flex:0 0 auto;
+    background:none;border:0;padding:9px;cursor:pointer;border-radius:9px}
+  .burger span{display:block;height:2px;border-radius:2px;background:var(--ink);
+    transition:transform .22s ease,opacity .18s ease}
+  .burger span+span{margin-top:5px}
+  .top.open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .top.open .burger span:nth-child(2){opacity:0}
+  .top.open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .topbar nav a{color:var(--ink);text-decoration:none;white-space:nowrap;padding:6px 0;
+    font-weight:600;letter-spacing:-.01em}
+  .topbar nav a:hover{color:var(--teal)}
+
+  .hero{padding:56px 0 44px;text-align:center}
+  .kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal);
+    font-weight:700;margin-bottom:18px}
+  h1{font-size:clamp(32px,4.8vw,58px);line-height:1.08;letter-spacing:-.025em;
+    margin:0 auto;max-width:none;font-weight:800}
+  .lede{font-size:17px;line-height:1.55;color:var(--muted);margin:18px auto 0;max-width:70ch}
+  .stats{display:flex;flex-wrap:wrap;justify-content:center;gap:24px 56px;margin-top:30px}
+  .stat b{display:block;font-size:26px;letter-spacing:-.015em;line-height:1;font-weight:700;
+    font-variant-numeric:tabular-nums}
+  .stat span{display:block;margin-top:6px;font-size:12px;color:var(--muted)}
+  .stat.alt b{color:var(--teal)}
+
+  .sec{padding:64px 0 8px}
+  main{padding-bottom:70px}
+  .sec h2{font-size:clamp(23px,2.1vw,30px);letter-spacing:-.015em;color:var(--teal);
+    margin:0 0 10px;font-weight:700;line-height:1.2}
+  .sec p.sub{margin:0 0 30px;color:var(--muted);max-width:none;font-size:17px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(430px,100%),1fr));gap:26px}
+  figure{margin:0;background:var(--card);border-radius:14px;overflow:hidden;
+    box-shadow:0 1px 2px rgba(20,20,20,.06),0 8px 22px -14px rgba(20,20,20,.30);
+    transition:transform .18s ease,box-shadow .18s ease}
+  figure:hover{transform:translateY(-3px);
+    box-shadow:0 2px 4px rgba(20,20,20,.07),0 20px 40px -20px rgba(20,20,20,.38)}
+  figure img{display:block;width:100%;height:auto;background:var(--cream);cursor:zoom-in}
+  figure .chart{display:block;padding:16px 14px 4px}
+  figure .chart svg{display:block;width:100%;height:auto}
+  figcaption{padding:6px 18px 18px}
+  .num{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--teal)}
+  .ttl{margin-top:3px;font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .wide{grid-column:1/-1}
+
+  #lb{position:fixed;inset:0;background:rgba(23,19,16,.92);display:none;
+    align-items:center;justify-content:center;z-index:100;padding:32px;cursor:zoom-out}
+  #lb.on{display:flex}
+  #lb img{max-width:100%;max-height:100%;object-fit:contain}
+
+  @media(max-width:900px){
+    .burger{display:block}
+    .topbar{min-height:58px}
+    .topbar nav{position:absolute;left:0;right:0;top:100%;margin:0;
+      flex-direction:column;gap:0;background:#fff;padding:6px 0 10px;
+      box-shadow:0 14px 26px -16px rgba(20,20,20,.35),0 1px 0 rgba(20,20,20,.06);
+      opacity:0;visibility:hidden;transform:translateY(-8px);
+      transition:opacity .2s ease,transform .2s ease,visibility .2s}
+    .top.open nav{opacity:1;visibility:visible;transform:none}
+    .topbar nav a{display:block;padding:13px 20px;font-size:17px}
+    .topbar nav a:active{background:rgba(20,20,20,.04)}
+  }
+  @media(max-width:640px){
+    .wrap{padding:0 12px}
+    .grid{grid-template-columns:1fr;gap:20px}
+    .hero{padding:32px 0 26px}
+    .kicker{margin-bottom:12px}
+    .sec{padding:46px 0 4px}
+    .sec p.sub{font-size:15.5px;margin-bottom:22px}
+    .stats{gap:18px 34px;margin-top:22px}
+    .stat b{font-size:21px}
+    .lede{font-size:15.5px;margin-bottom:0}
+    .topbar{gap:10px}
+    .brand{gap:10px}
+    .brand .fsd{height:26px}
+    .brand .bayes{height:21px}
+    .brand .div{height:20px}
+    #lb{padding:14px}
+    figcaption{padding:12px 14px 15px}
+  }
+</style>
+</head>
+<body id="top">
+
+<header class="top">
+  <div class="wrap topbar">
+    <a class="brand" href="#top" aria-label="FSD Africa and Bayes Consulting">
+      <img class="fsd" src="fsd.png" alt="FSD Africa">
+      <span class="div"></span>
+      <img class="bayes" src="bayes.png" alt="Bayes Consulting">
+    </a>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav">
+      <a href="#flows">Flows</a><a href="#instruments">Instruments</a>
+      <a href="#delivery">Delivery</a><a href="#value">Value</a><a href="#geography">Geography</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Adaptation finance flows to Africa</h1>
+    <p class="lede">Illustrations tracing the flow of the money: where it comes from, what shape
+      it takes, which institutions move it, what it buys, and who it reaches.</p>
+    <div class="stats">
+      <div class="stat alt"><b>USD 14.8bn</b><span>Tracked adaptation finance, 2023</span></div>
+      <div class="stat"><b>USD 52.7bn</b><span>NDC-costed annual need</span></div>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+<section class="sec" id="flows">
+  <h2>I — Flows and the gap</h2>
+  <p class="sub">Headline volumes, how Africa tracks against other adaptation series, and the split against mitigation and ODA.</p>
+  <div class="grid" id="g1"></div>
+</section>
+
+<section class="sec" id="instruments">
+  <h2>II — Institutions and instruments</h2>
+  <p class="sub">Who provides the finance, and on what terms — grants, concessional debt, market-rate debt, equity and risk transfer.</p>
+  <div class="grid" id="g2"></div>
+</section>
+
+<section class="sec" id="delivery">
+  <h2>III — Sectors and delivery</h2>
+  <p class="sub">Where the money lands by sector, project size and pipeline stage, and how much survives the journey from readiness to implementation.</p>
+  <div class="grid" id="g3"></div>
+</section>
+
+<section class="sec" id="value">
+  <h2>IV — Value, appraisal and pledges</h2>
+  <p class="sub">Benefit–cost evidence, the triple dividend, the quality of appraisal, and the distance between pledges and delivery.</p>
+  <div class="grid" id="g4"></div>
+</section>
+
+<section class="sec" id="geography">
+  <h2>V — Geography</h2>
+  <p class="sub">Regional and per-capita distribution, city-level activity, and finance set against vulnerability.</p>
+  <div class="grid" id="g5"></div>
+</section>
+
+</main>
+
+<div id="lb"><img alt=""></div>
+
+<script src="figure_data.js"></script>
+<script src="charts.js"></script>
+<script>
+const F=[
+["f01_headline_series","Adaptation finance to Africa, nominal and real",1,1],
+["f02_indexed","Africa indexed against global adaptation series",1,0],
+["f03_adaptation_vs_mitigation","Adaptation against mitigation finance",1,0],
+["f04_oda_vs_adaptation","ODA and the adaptation ratio",1,0],
+["f05_sankey_2023","Sources to instruments to sectors, 2023",1,1],
+["f06_institution_shares","Provider shares by institution type",2,0],
+["f07_institution_stage_matrix","Institution by pipeline stage",2,0],
+["f08_instrument_mix","Instrument mix over time",2,0],
+["f09_grant_share_debt_share","Grant share against debt share",2,0],
+["f10_fund_instruments","Instrument mix by climate fund",2,0],
+["f11_arc_rsf","African Risk Capacity and the Risk-Sharing Facility",2,0],
+["f12_sector_treemap","Adaptation finance by sector",3,1],
+["f13_sector_trend","Sector shares over time",3,0],
+["f14_fund_fingerprint","Fund fingerprints",3,0],
+["f15_project_size","Project size distribution",3,0],
+["f16_ggw_waffle","Great Green Wall: pledged, disbursed, needed",3,0],
+["f17_stage_split","Readiness, preparation and implementation",3,0],
+["f18_gcf_funnel","The GCF approval funnel",3,0],
+["f19_prep_facilities","Project preparation facilities",3,0],
+["f20_disaster_finance","Loss and damage and contingent credit",3,0],
+["f21_programme_timeline","Programme timelines",3,1],
+["f22_bcr_range","Benefit–cost ratios across the evidence",4,0],
+["f23_tdr_shares","Triple dividend shares",4,0],
+["f24_appraisal_waffle","How many dividends appraisals value",4,0],
+["f25_need_funnel","From need to delivered finance",4,0],
+["f26_pledge_delivery","Pledges against delivery",4,0],
+["f27_challenge_heat","Challenge intensity matrix",4,1],
+["f28_urban_rural","Urban and rural allocation",5,0],
+["f29_urban_regions","Urban adaptation finance by world region",5,0],
+["f30_map_regions","Adaptation finance by African region",5,0],
+["f31_map_per_capita","Adaptation finance per capita",5,0],
+["f32_map_bivariate","Finance against vulnerability, bivariate",5,0],
+["f33_map_cities","City-level adaptation activity",5,0],
+["f34_region_dumbbell","Finance share against population share",5,0],
+["f35_vulnerability_scatter","Vulnerability and finance received",5,1]
+];
+const head=document.querySelector('.top'),burger=document.getElementById('burger');
+const setMenu=o=>{head.classList.toggle('open',o);burger.setAttribute('aria-expanded',o)};
+burger.addEventListener('click',e=>{e.stopPropagation();setMenu(!head.classList.contains('open'))});
+document.getElementById('nav').addEventListener('click',e=>{if(e.target.tagName==='A')setMenu(false)});
+document.addEventListener('click',e=>{if(!head.contains(e.target))setMenu(false)});
+const lb=document.getElementById('lb'),lbi=lb.querySelector('img');
+F.forEach((f,i)=>{
+  const [id,title,sec,wide]=f;
+  const el=document.createElement('figure');
+  if(wide)el.className='wide';
+  const native=window.CHARTS&&window.CHARTS[id]&&window.FIGDATA;
+  let body;
+  if(native){
+    body=document.createElement('div');body.className='chart';
+    try{window.CHARTS[id](body,window.FIGDATA);}
+    catch(err){console.error('renderer failed for '+id,err);body=null;}
+  }
+  if(!body){
+    body=document.createElement('img');
+    body.loading='lazy';body.alt=title;body.src='figures_fsd_sharp/'+id+'.png';
+    body.onerror=function(){this.onerror=null;this.src='figures/'+id+'.png'};
+    body.addEventListener('click',()=>{lbi.src=body.src;lb.classList.add('on')});
+  }
+  const cap=document.createElement('figcaption');
+  cap.innerHTML='<div class="num">FIGURE '+String(i+1).padStart(2,'0')+'</div><div class="ttl">'+title+'</div>';
+  el.appendChild(body);el.appendChild(cap);
+  document.getElementById('g'+sec).appendChild(el);
+});
+lb.addEventListener('click',()=>lb.classList.remove('on'));
+addEventListener('keydown',e=>{if(e.key==='Escape'){lb.classList.remove('on');setMenu(false)}});
+</script>
+</body>
+</html>
