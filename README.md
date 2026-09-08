@@ -37,6 +37,27 @@ which gets the whole continent into 31KB. Projection is equirectangular, fitted 
 African bounding box in `charts.js`, so the page needs no mapping library. Somaliland is a
 separate Natural Earth unit and is aliased onto `SOM`, matching the finance reporting.
 
+## Interaction
+
+Every mark is a live DOM node, so the figures answer the pointer:
+
+- **Hover readout.** 1,176 marks carry a tooltip built from the same numbers that drew them
+  — a bar gives its category and value, a map country its name and per-person figure, a
+  Sankey ribbon its two ends. The same text is on the mark as `aria-label`, so a screen
+  reader gets it too.
+- **Series highlight.** Marks that belong together share a `key`, which also goes on their
+  legend swatch. Hovering any of them fades the rest of the figure to 20% and lights the
+  whole series — hovering "Grants" in the legend traces grants across every year.
+- **Hover columns.** Line charts (`f01`, `f02`, `f03`) get a transparent column per x
+  position, so the gaps between marks still read every series back at that year. They sit
+  under the marks, so a mark's own tooltip still wins. `f13` puts its columns on top
+  instead — one band of a stack says little on its own, so the whole stack reads at once.
+- **Enlarge.** The button in a figure's top-right corner clones the SVG into the lightbox
+  at full width. It is a live clone, so the tooltips work there too.
+
+All of it runs off one delegated listener in `charts.js`; renderers only declare `tip:` and
+`key:` on the marks they draw, and `el()` turns those into `data-tip` and `data-k`.
+
 ## Changing the data
 
 ```bash

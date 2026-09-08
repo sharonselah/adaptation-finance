@@ -69,8 +69,30 @@
   figure:hover{transform:translateY(-3px);
     box-shadow:0 2px 4px rgba(20,20,20,.07),0 20px 40px -20px rgba(20,20,20,.38)}
   figure img{display:block;width:100%;height:auto;background:var(--cream);cursor:zoom-in}
-  figure .chart{display:block;padding:16px 14px 4px}
+  figure .chart{display:block;padding:16px 14px 4px;position:relative}
   figure .chart svg{display:block;width:100%;height:auto}
+
+  /* Chart interaction. Marks carry data-tip (the readout) and data-k (the series they
+     belong to); charts.js sets .dim on the svg and .hot on whatever is under the cursor. */
+  .chart svg .hit{cursor:crosshair}
+  .chart svg .hit,.chart svg [data-k]{transition:opacity .12s ease}
+  .chart svg.dim .hit,.chart svg.dim [data-k]{opacity:.2}
+  .chart svg.dim .hot{opacity:1}
+  .chart svg .band{fill:transparent;cursor:crosshair}
+  .chart svg .band:hover{fill:rgba(56,113,103,.07)}
+  .fig-tip{position:fixed;top:0;left:0;z-index:200;pointer-events:none;opacity:0;
+    background:#123B33;color:#fff;padding:8px 11px;border-radius:9px;max-width:290px;
+    font:500 12px/1.5 Montserrat,system-ui,sans-serif;letter-spacing:-.005em;
+    box-shadow:0 10px 28px rgba(20,20,20,.28);transition:opacity .1s ease}
+  .fig-tip.on{opacity:1}
+  .fig-tip .h{font-weight:700;font-size:12.5px;margin-bottom:3px}
+  .fig-tip div+div{color:rgba(255,255,255,.82)}
+
+  .zoom{position:absolute;top:10px;right:12px;z-index:2;width:30px;height:30px;padding:0;
+    border:0;border-radius:8px;background:rgba(255,255,255,.9);color:var(--teal);
+    font:600 15px/1 Montserrat,system-ui,sans-serif;cursor:zoom-in;opacity:0;
+    box-shadow:0 1px 3px rgba(20,20,20,.2);transition:opacity .15s ease}
+  figure:hover .zoom,.zoom:focus-visible{opacity:1}
   figcaption{padding:6px 18px 18px}
   .num{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--teal)}
   .ttl{margin-top:3px;font-size:15px;font-weight:600;letter-spacing:-.01em}
@@ -80,6 +102,11 @@
     align-items:center;justify-content:center;z-index:100;padding:32px;cursor:zoom-out}
   #lb.on{display:flex}
   #lb img{max-width:100%;max-height:100%;object-fit:contain}
+  /* A native chart goes into the lightbox as a live SVG clone, so it stays readable and
+     still answers the pointer at full size. */
+  #lbc{display:none;background:#fff;border-radius:12px;padding:12px;cursor:default;
+    max-width:100%;max-height:100%;overflow:auto}
+  #lbc svg{display:block;width:min(1500px,86vw);height:auto}
 
   @media(max-width:900px){
     .burger{display:block}
@@ -173,7 +200,7 @@
 
 </main>
 
-<div id="lb"><img alt=""></div>
+<div id="lb"><img alt=""><div id="lbc"></div></div>
 
 <script src="africa_geo.js"></script>
 <script src="figure_data.js"></script>
@@ -221,7 +248,11 @@ const setMenu=o=>{head.classList.toggle('open',o);burger.setAttribute('aria-expa
 burger.addEventListener('click',e=>{e.stopPropagation();setMenu(!head.classList.contains('open'))});
 document.getElementById('nav').addEventListener('click',e=>{if(e.target.tagName==='A')setMenu(false)});
 document.addEventListener('click',e=>{if(!head.contains(e.target))setMenu(false)});
-const lb=document.getElementById('lb'),lbi=lb.querySelector('img');
+const lb=document.getElementById('lb'),lbi=lb.querySelector('img'),lbc=document.getElementById('lbc');
+const openImg=src=>{lbc.style.display='none';lbi.style.display='';lbi.src=src;lb.classList.add('on')};
+const openSvg=node=>{lbi.style.display='none';lbc.style.display='block';
+  lbc.innerHTML='';lbc.appendChild(node.cloneNode(true));lb.classList.add('on')};
+lbc.addEventListener('click',e=>e.stopPropagation());
 F.forEach((f,i)=>{
   const [id,title,sec,wide]=f;
   const el=document.createElement('figure');
@@ -232,12 +263,19 @@ F.forEach((f,i)=>{
     body=document.createElement('div');body.className='chart';
     try{window.CHARTS[id](body,window.FIGDATA);}
     catch(err){console.error('renderer failed for '+id,err);body=null;}
+    if(body){
+      const z=document.createElement('button');
+      z.className='zoom';z.type='button';z.textContent='\u2922';
+      z.setAttribute('aria-label','Enlarge: '+title);z.title='Enlarge';
+      z.addEventListener('click',()=>openSvg(body.querySelector('svg')));
+      body.appendChild(z);
+    }
   }
   if(!body){
     body=document.createElement('img');
     body.loading='lazy';body.alt=title;body.src='figures_fsd_sharp/'+id+'.png';
     body.onerror=function(){this.onerror=null;this.src='figures/'+id+'.png'};
-    body.addEventListener('click',()=>{lbi.src=body.src;lb.classList.add('on')});
+    body.addEventListener('click',()=>openImg(body.src));
   }
   const cap=document.createElement('figcaption');
   cap.innerHTML='<div class="num">FIGURE '+String(i+1).padStart(2,'0')+'</div><div class="ttl">'+title+'</div>';

@@ -16,6 +16,10 @@ _preview/
 _sheet/
 _val.js
 _png.js
+_samp.js
+_diff.js
+_page.js
+_old.js
 
 # Python ----------------------------------------------------------------------
 __pycache__/
