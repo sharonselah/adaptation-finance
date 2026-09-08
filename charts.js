@@ -14,6 +14,13 @@
   const TEAL = '#387167', LIME = '#98C11F', INK = '#123B33';
   const GREY = '#6B615A', MID = '#9A918B', GRID = '#E6E4E1', DARK = '#4A4440';
   const FAINT = 'rgba(56,113,103,.11)';
+  /* Everything inside a figure is set 15% down from the size it is written at, so the
+     charts read lighter without every renderer being retuned. The headline title opts out
+     with `raw` - it was already carrying the figure on its own. */
+  const TSCALE = 0.85;
+  /* The headline title, set apart because it is exempt from TSCALE. Lines still wrap at
+     the size they were written at, so trimming it cannot reflow a figure. */
+  const TITLE = 15.5;
   const NS = 'http://www.w3.org/2000/svg';
 
   // ---------------------------------------------------------------- helpers
@@ -54,9 +61,10 @@
 
   function txt(p, x, y, s, o) {
     o = o || {};
+    const size = o.size || 13;
     const t = el('text', {
       x: x, y: y, fill: o.fill || GREY,
-      'font-size': o.size || 13, 'font-weight': o.weight || 500,
+      'font-size': o.raw ? size : +(size * TSCALE).toFixed(2), 'font-weight': o.weight || 500,
       'text-anchor': o.anchor || 'start', 'dominant-baseline': o.base || 'auto',
       'letter-spacing': o.track || '-0.005em',
       key: o.key, tip: o.tip
@@ -169,7 +177,7 @@
   function chrome(s, W, title, subtitle, source, pad) {
     let y = 4;
     const tl = wrap(title, W - pad * 2, 17, 700);
-    tl.forEach(l => { txt(s, pad, y += 20, l, { fill: INK, size: 17, weight: 700, track: '-0.02em' }); });
+    tl.forEach(l => { txt(s, pad, y += 20, l, { fill: INK, size: TITLE, weight: 700, track: '-0.02em', raw: true }); });
     if (subtitle) {
       const sl = wrap(subtitle, W - pad * 2, 12.5, 500);
       sl.forEach(l => { txt(s, pad, y += 18, l, { fill: GREY, size: 12.5 }); });
@@ -294,7 +302,7 @@
     const W = 1000, pad = 26;
     const s = svg(host, W, 560);
     let top = chrome(s, W, 'Aid to Africa and adaptation finance move in opposite directions',
-      'ODA to Africa, USD bn (bars); adaptation finance as a share of ODA, % (line)', o.source, pad);
+      'ODA to Africa, USD bn (bars); adaptation finance as a share of ODA, % (line)', o.source, pad) + 22;
     const L = 60, R = W - 60, B = 440;
     const ymax = 80, rmax = 35;
     const n = o.years.length, bw = (R - L) / n * 0.62;
@@ -514,7 +522,7 @@
   /* Text that has to sit over marks: stroke the glyphs in the page ground first. */
   function halo(t) {
     t.setAttribute('stroke', '#fff');
-    t.setAttribute('stroke-width', 3.2);
+    t.setAttribute('stroke-width', 2.8);
     t.setAttribute('paint-order', 'stroke');
     return t;
   }
@@ -1046,7 +1054,7 @@
     const W = 1000, pad = 26, s = svg(host, W, 560);
     const top = chrome(s, W, 'Each fund has its own sector fingerprint; agriculture and water are the only constants',
       'Share of each portfolio by sector, per cent. Rows sum to 100', d.source, pad) + 66;
-    const L = 250, cw = (W - pad - L) / d.cols.length, rh = 54;
+    const L = 250, cw = (W - pad - L) / d.cols.length, rh = 68;
     d.cols.forEach((c, j) => {
       const x = L + j * cw + cw / 2;
       wrap(c, 92, 11, 600).forEach((l, li) => txt(s, x, top - 30 + li * 13, l, { anchor: 'middle', size: 11, weight: 600, fill: DARK }));
@@ -1277,7 +1285,7 @@
     const W = 1000, pad = 26, s = svg(host, W, 560);
     const top = chrome(s, W, 'The benchmark splits the triple dividend three ways; almost every real appraisal collapses into one or two',
       'Share of monetised benefits by dividend, per cent', d.source, pad) + 14;
-    const L = 330, R = W - 60, bh = 34, gap = 20;
+    const L = 330, R = W - 60, bh = 44, gap = 26;
     names.forEach((nm, i) => {
       const y = top + i * (bh + gap), row = d[nm];
       txt(s, L - 14, y + bh / 2, nm, { anchor: 'end', base: 'middle', size: 12, weight: i === 0 ? 700 : 600, fill: i === 0 ? INK : DARK });
