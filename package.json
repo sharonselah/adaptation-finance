@@ -1,0 +1,9 @@
+{
+  "name": "adaptation-finance",
+  "private": true,
+  "description": "Static site. No build step - these are only for checking the SVG renderers headlessly.",
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "jsdom": "^22.1.0"
+  }
+}

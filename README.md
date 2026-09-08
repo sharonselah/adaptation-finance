@@ -12,6 +12,7 @@ Open `index.html`. No build step, no server required — it works over `file://`
 | `index.html` | The site: five sections, 35 figures, lightbox |
 | `charts.js` | Native SVG renderers + the `CHARTS` registry |
 | `figure_data.js` | Data as a script tag — generated, do not edit |
+| `africa_geo.js` | Africa boundaries for the four maps — generated, do not edit |
 | `make_data_js.py` | Regenerates `figure_data.js` from the JSON |
 | `figures/figure_data.json` | **Source of truth** for every figure |
 | `figures/` | Original delivered PNGs (red/orange palette) |
@@ -26,12 +27,15 @@ Each figure is drawn one of two ways, decided per figure at load:
    any zoom, inherits the page's Montserrat, and has a transparent ground.
 2. **PNG fallback** from `figures_fsd_sharp/` otherwise.
 
-7 of 35 are native so far (`f01`, `f04`, `f16`, `f17`, `f24`, `f26`, `f34`). Converting one
-more means adding a renderer keyed by figure id to `CHARTS` — nothing else changes, and the
-page never breaks mid-migration.
+All 35 are native. The PNG path is still wired up, so a renderer that throws falls back to
+the image for that figure alone rather than breaking the page.
 
-The four maps (`f30`–`f33`) need Africa boundaries embedded in the page: the JSON carries
-`iso3` codes but no geometry.
+The four maps (`f30`–`f33`) join the data to boundaries by `iso3` — the JSON carries the
+codes but no geometry. `africa_geo.js` supplies it: Natural Earth 110m admin-0 filtered to
+`CONTINENT=Africa`, coordinates rounded to two decimals and rings under 0.6 deg² dropped,
+which gets the whole continent into 31KB. Projection is equirectangular, fitted to the
+African bounding box in `charts.js`, so the page needs no mapping library. Somaliland is a
+separate Natural Earth unit and is aliased onto `SOM`, matching the finance reporting.
 
 ## Changing the data
 
@@ -40,8 +44,8 @@ The four maps (`f30`–`f33`) need Africa boundaries embedded in the page: the J
 python make_data_js.py
 ```
 
-Every native figure updates. PNG-backed figures need `recolor_figures.py` re-run, or
-conversion to a native renderer.
+Every figure updates. `figures_fsd_sharp/` is a static build of the same 35 charts, kept for
+print and slide use; regenerate it with `recolor_figures.py` if the data moves.
 
 Note: `figures/figure_data.json` contains bare `NaN` values (missing PPCR and ND-GAIN
 entries in `f31`), which makes it invalid strict JSON — `JSON.parse` rejects it. That is why

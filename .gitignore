@@ -11,6 +11,12 @@ figures_fsd_tealscale/
 # case a print/PNG deliverable is needed again; drop this line to track it.
 rebuild_figures.py
 
+# Scratch --------------------------------------------------------------------
+_preview/
+_sheet/
+_val.js
+_png.js
+
 # Python ----------------------------------------------------------------------
 __pycache__/
 *.py[cod]
