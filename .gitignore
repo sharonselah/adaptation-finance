@@ -1,9 +1,10 @@
-# Superseded recolour builds ---------------------------------------------------
-# figures_fsd/       pinned brand hexes, but ~38% lower contrast (looked blurry)
-# figures_fsd_tealscale/  graded scales built from teal; washes out the choropleths
-# figures_fsd_sharp/ is the build the site serves, and is committed.
+# Recolour outputs and backups ------------------------------------------------
+# Only figures/ (originals) and figures_fsd_sharp/ (what the site serves) are tracked.
+# Any other recolour is reproducible with recolor_figures.py, and whiten_bg.py drops a
+# *_cream_backup/ beside whatever it converts.
 figures_fsd/
 figures_fsd_tealscale/
+*_cream_backup/
 
 # Redundant renderer ----------------------------------------------------------
 # The matplotlib route was overtaken by native SVG in charts.js. Kept locally in
@@ -27,8 +28,3 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
-
-# Local safety copies of the cream originals; regenerable, not tracked
-figures_cream_backup/
-figures_fsd_cream_backup/
-figures_fsd_sharp_cream_backup/
