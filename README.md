@@ -18,6 +18,9 @@ Open `index.html`. No build step, no server required — it works over `file://`
 | `figures/` | Original delivered PNGs (red/orange palette) |
 | `figures_fsd_sharp/` | PNGs recoloured to the FSD palette — what the site serves |
 | `recolor_figures.py` | The recolouring tool |
+| `make_deck.py` | Builds the 20-slide PowerPoint from the figure pack |
+| `deck_figures.py` | Crops the baked-in titles off the PNGs so the deck can set them natively |
+| `BRP-01_adaptation_finance.pptx` | The deck — generated, regenerate rather than hand-edit for reuse |
 
 ## How figures render
 
@@ -72,6 +75,27 @@ Note: `figures/figure_data.json` contains bare `NaN` values (missing PPCR and ND
 entries in `f31`), which makes it invalid strict JSON — `JSON.parse` rejects it. That is why
 the page loads a generated script rather than fetching the JSON; `make_data_js.py` converts
 those to `null`.
+
+## The deck
+
+```bash
+python make_deck.py            # -> BRP-01_adaptation_finance.pptx
+```
+
+20 slides at 16:9, following the same palette and Montserrat as the site: a title, four
+headline numbers, then the five parts, each opening on a divider and running two or three
+figures, closing on what the set adds up to.
+
+Every headline, bullet and source note is a native PowerPoint text box, so the deck is
+editable in place. The only bitmaps are the plots, and `deck_figures.py` crops the title,
+subtitle and source note off each PNG first — otherwise every slide would state its
+headline twice, once as live text and once baked into the image. The crop is found from
+row ink density rather than fixed offsets, since the figures differ in height and in how
+many lines their titles run to; `f22` and `f35` put content where the scan expects the
+title gap, so those two are pinned to a measured row in `OVERRIDE_TOP`.
+
+Montserrat is referenced by name and is not embedded. It is a Google font, so it renders
+correctly wherever it is installed and substitutes gracefully where it is not.
 
 ## Palette
 
